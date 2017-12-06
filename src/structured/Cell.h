@@ -12,6 +12,7 @@ class Cell {
         double uWest, uEast;
         double cx;
         double dx;
+        double total_flux;
 };
 
 #endif
