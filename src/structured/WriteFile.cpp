@@ -5,7 +5,15 @@
 #include "Config.h"
 #include "Cell.h"
 
-void WriteFile::write_file (Cell *cells, int N, double time, int counter) {
+WriteFile::WriteFile() {
+    WriteFile::counter = 0;
+}
+
+WriteFile::~WriteFile() {
+
+}
+
+void WriteFile::write_file (Cell *cells, int N, double time) {
     std::string path = "./output/";
     const int rk_step = 0;
 
@@ -20,5 +28,7 @@ void WriteFile::write_file (Cell *cells, int N, double time, int counter) {
     for (int i = 0; i < N; i++) {
         file << cells[i].cx << " " << cells[i].u[rk_step] << std::endl;
     }
+
+    WriteFile::counter += 1;
 
 }

@@ -1,6 +1,6 @@
 CC = icpc
 OUTPUT = cfd.x
-OBJECTS = main.o Initialize.o WriteFile.o CalculateTimeStep.o GhostCellUpdater.o VariableReconstructor.o FLux.o
+OBJECTS = main.o Initialize.o WriteFile.o CalculateTimeStep.o GhostCellUpdater.o VariableReconstructor.o Flux.o TimeIntegration.o VariableCopy.o
 
 default: cfd
 
@@ -29,6 +29,12 @@ VariableReconstructor.o: VariableReconstructor.cpp VariableReconstructor.h
 
 Flux.o: Flux.cpp Flux.h
 	$(CC) -c Flux.cpp
+
+TimeIntegration.o: TimeIntegration.cpp TimeIntegration.h
+	$(CC) -c TimeIntegration.cpp
+
+VariableCopy.o: VariableCopy.cpp VariableCopy.h
+	$(CC) -c VariableCopy.cpp
 
 clean:
 	rm *.o

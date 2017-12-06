@@ -11,6 +11,8 @@
 #include "GhostCellUpdater.h"
 #include "VariableReconstructor.h"
 #include "Flux.h"
+#include "TimeIntegration.h"
+#include "VariableCopy.h"
 
 int main() {
     const int N = Config::NUM_X_CELLS + 2 * Config::NUM_GHOST_CELLS;
@@ -34,8 +36,7 @@ int main() {
 
 
     /**** Start solving ****/
-    WriteFile::write_file(cells, N, 0.0, counter);
-    counter += 1;
+    WriteFile::write_file(cells, N, 0.0);
 
     for (int it = 0; it < Config::MAX_TIME_ITER; it++) {
         dt = CalculateTimeStep::get_dt(cells, N);
@@ -50,11 +51,16 @@ int main() {
             GhostCellUpdater::updateGhostCells(cells, rk_step);
             VariableReconstructor::reconstructVariables(cells, rk_step);
             Flux::calculateFlux(cells, rk_step, N);
+            TimeIntegration::updateCellAverages(cells, rk_step, dt);
         }
+
+        VariableCopy::copyZeroRK(cells, N);
 
         time += dt;
         if (last_dt) {
             break;
         }
     }
+
+    WriteFile::write_file(cells, N, time);
 }
