@@ -6,9 +6,11 @@
 #define CONFIG_H_
 #include <string>
 
+enum ReconstructorTypes {FIRST_ORDER, LAX_WENDROFF, BEAM_WARMING, FROMM, LIMITED_LW};
+
 class Config {
     public:
-        static const int NUM_X_CELLS = 200;
+        static const int NUM_X_CELLS = 100;
         static const int NUM_GHOST_CELLS = 3;
         static const int NUM_RK_STEPS = 3;
         static const double STOPPING_TIME = 2.0;
@@ -17,6 +19,7 @@ class Config {
         static const double MAX_X = 1.0;
         static const double ADVECTION_VELOCITY = 1.0;
         static const double COURANT_NUMBER = 0.6;
+        static const ReconstructorTypes RECONST_TYPE = LIMITED_LW;
 };
 
 #endif
