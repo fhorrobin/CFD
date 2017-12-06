@@ -36,7 +36,8 @@ int main() {
 
 
     /**** Start solving ****/
-    WriteFile::write_file(cells, N, 0.0);
+    WriteFile::write_file(cells, N, 0.0, counter);
+    counter += 1;
 
     for (int it = 0; it < Config::MAX_TIME_ITER; it++) {
         dt = CalculateTimeStep::get_dt(cells, N);
@@ -62,5 +63,6 @@ int main() {
         }
     }
 
-    WriteFile::write_file(cells, N, time);
+    WriteFile::write_file(cells, N, time, counter);
+    counter += 1;
 }

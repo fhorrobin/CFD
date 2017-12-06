@@ -1,7 +1,8 @@
 #include <math.h>
-#include "CaulculateTimeStep.h"
+#include <stdlib.h>
+#include "CalculateTimeStep.h"
 
-double CaulculateTimeStep::get_dt(Cell *cells, int N) {
+double CalculateTimeStep::get_dt(Cell *cells, int N) {
     // Assuming that dx is a constant 
     return cells[0].dx / abs(Config::ADVECTION_VELOCITY) * Config::COURANT_NUMBER;
 }

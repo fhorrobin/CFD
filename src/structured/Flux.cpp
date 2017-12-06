@@ -1,8 +1,9 @@
 #include <math.h>
+#include <stdlib.h>
 #include "Flux.h"
 #include "Config.h"
 
-void FLux::calculateFlux(Cell *cells, int rk_step, int N) {
+void Flux::calculateFlux(Cell *cells, int rk_step, int N) {
     double leftValue = 0;
     double rightValue = 0;
     double flux = 0;
@@ -11,7 +12,7 @@ void FLux::calculateFlux(Cell *cells, int rk_step, int N) {
         cells[i].total_flux = 0.0;
     }
 
-    for (int interfaceIndex = Config::NUM_GHOST_CELLS; interfaceIndex < Confi::NUM_X_CELLS + Config::NUM_GHOST_CELLS + 1; interfaceIndex++) {
+    for (int interfaceIndex = Config::NUM_GHOST_CELLS; interfaceIndex < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS + 1; interfaceIndex++) {
         leftValue = cells[interfaceIndex - 1].uEast;
         rightValue = cells[interfaceIndex + 1].uWest;
 

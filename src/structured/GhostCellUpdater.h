@@ -4,7 +4,7 @@
 
 class GhostCellUpdater {
     public:
-        static void updateGhostCells(Cell *cells, int rk_step)
+        static void updateGhostCells(Cell *cells, int rk_step);
 };
 
 #endif
