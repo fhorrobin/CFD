@@ -4,10 +4,11 @@
 
 #ifndef CONFIG_H_
 #define CONFIG_H_
+#include <string>
 
 class Config {
     public:
-        static const int NUM_X_CELLS = 10;
+        static const int NUM_X_CELLS = 100;
         static const int NUM_GHOST_CELLS = 3;
         static const int NUM_RK_STEPS = 1;
         static const double STOPPING_TIME = 2.0;
