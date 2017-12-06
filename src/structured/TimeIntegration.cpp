@@ -20,13 +20,38 @@ void TimeIntegration::updateCellAverages(Cell *cells, int rk_step, double dt) {
                     
                     case 1: // Step 1
                         cells[i].u[rk_step + 1]
-                            = 0.5 * (cells[i].u[rk_step -1]
+                            = 0.5 * (cells[i].u[rk_step - 1]
                             + cells[i].u[rk_step]
                             + dt / cells[i].dx * cells[i].total_flux);
                     break;
                 }
             }
-            break;
+        break;
+
+        case 3: // 3 Step RK Method
+            for (int i = Config::NUM_GHOST_CELLS; i < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS; i++) {
+                switch (rk_step) {
+                    case 0: // Step 0
+                        cells[i].u[rk_step + 1] = cells[i].u[rk_step]
+                        + dt / cells[i].dx * cells[i].total_flux;
+                    break;
+                    
+                    case 1: // Step 1
+                        cells[i].u[rk_step + 1]
+                            = 3.0/4.0 * cells[i].u[rk_step - 1]
+                            + 1.0/4.0 * cells[i].u[rk_step]
+                            + 1.0/4.0 * dt / cells[i].dx * cells[i].total_flux;
+                    break;
+
+                    case 2: // Step 1
+                        cells[i].u[rk_step + 1]
+                            = 1.0/3.0 * cells[i].u[rk_step - 2]
+                            + 2.0/3.0 * cells[i].u[rk_step]
+                            + 2.0/3.0 * dt / cells[i].dx * cells[i].total_flux;
+                    break;
+                }
+            }
+        break;
             
         default:
             std::cout << "Specified integrator order is not defined." << std::endl;

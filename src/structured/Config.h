@@ -10,7 +10,7 @@ class Config {
     public:
         static const int NUM_X_CELLS = 200;
         static const int NUM_GHOST_CELLS = 3;
-        static const int NUM_RK_STEPS = 2;
+        static const int NUM_RK_STEPS = 3;
         static const double STOPPING_TIME = 2.0;
         static const int MAX_TIME_ITER = 100000;
         static const double MIN_X = -1.0;
