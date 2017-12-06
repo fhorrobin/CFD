@@ -4,7 +4,7 @@
 
 class VariableCopy {
     public:
-        static void copyZeroRK(Cell *cells, int N);      
+        static void copyZeroRK(Cell *cells);      
 };
 
 #endif

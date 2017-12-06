@@ -55,11 +55,17 @@ int main() {
             TimeIntegration::updateCellAverages(cells, rk_step, dt);
         }
 
-        VariableCopy::copyZeroRK(cells, N);
+        VariableCopy::copyZeroRK(cells);
 
         time += dt;
         if (last_dt) {
             break;
+        }
+
+        // Write output every 5 dt
+        if ((it + 1) % 5 == 0) {
+            WriteFile::write_file(cells, N, time, counter);
+            counter += 1;
         }
     }
 
