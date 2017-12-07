@@ -22,8 +22,8 @@ class Config {
         static const double MAX_Y = 1.0;
         static const double ADVECTION_VELOCITY_X = 1.0;
         static const double ADVECTION_VELOCITY_Y = 1.0;
-        static const double COURANT_NUMBER = 0.5;
-        static const ReconstructorTypes RECONST_TYPE = FIRST_ORDER;
+        static const double COURANT_NUMBER = 0.3;
+        static const ReconstructorTypes RECONST_TYPE = LIMITED_LW;
 
         static const int NX = Config::NUM_X_CELLS + 2 * Config::NUM_GHOST_CELLS;
         static const int NY = Config::NUM_Y_CELLS + 2 * Config::NUM_GHOST_CELLS;
