@@ -5,7 +5,7 @@
 
 class CalculateTimeStep {
     public:
-        static double get_dt(Cell *cells, int N);
+        static double get_dt(Cell cells[][Config::NY]);
 };
 
 #endif

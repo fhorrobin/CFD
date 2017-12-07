@@ -3,25 +3,54 @@
 #include "Flux.h"
 #include "Config.h"
 
-void Flux::calculateFlux(Cell *cells, int rk_step, int N) {
+void Flux::calculateFlux(Cell cells[][Config::NY], int rk_step) {
     double leftValue = 0;
     double rightValue = 0;
+    double topValue = 0;
+    double bottomValue = 0;
     double flux = 0;
 
-    for (int i = 0; i < N; i++) {
-        cells[i].total_flux = 0.0;
+    for (int i = 0; i < Config::NX; i++) {
+        for (int j = 0; j < Config::NY; j++) {
+            cells[i][j].total_flux = 0.0;
+        }
     }
 
-    for (int interfaceIndex = Config::NUM_GHOST_CELLS; interfaceIndex < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS + 1; interfaceIndex++) {
-        leftValue = cells[interfaceIndex - 1].uEast;
-        rightValue = cells[interfaceIndex + 1].uWest;
+    // Assuming dx, dy constant
+    double dx = cells[0][0].dx;
+    double dy = cells[0][0].dy;
 
-        // Lax-Freidrichs Scheme
-        flux = 0.5 * Config::ADVECTION_VELOCITY * (leftValue + rightValue) 
-                - 0.5 * abs(Config::ADVECTION_VELOCITY) * (rightValue - leftValue);
+    // Flux through the vertical edges
+    for (int j = Config::NUM_GHOST_CELLS; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS; j++) {
+        for (int vertInterfaceIndex = Config::NUM_GHOST_CELLS; vertInterfaceIndex < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS + 1; vertInterfaceIndex++) {
+            leftValue = cells[vertInterfaceIndex - 1][j].uEast;
+            rightValue = cells[vertInterfaceIndex][j].uWest;
 
-        cells[interfaceIndex - 1].total_flux -= flux;
-        cells[interfaceIndex].total_flux += flux;
+            // Lax-Freidrichs Scheme
+            flux = 0.5 * Config::ADVECTION_VELOCITY_X * (leftValue + rightValue) 
+                    - 0.5 * abs(Config::ADVECTION_VELOCITY_X) * (rightValue - leftValue);
 
+            flux *= dy;
+
+            cells[vertInterfaceIndex - 1][j].total_flux -= flux;
+            cells[vertInterfaceIndex][j].total_flux += flux;
+        }
+    }
+
+    // Flux through the horizontal edges
+    for (int i = Config::NUM_GHOST_CELLS; i < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS; i++) {
+        for (int horizInterfaceIndex = Config::NUM_GHOST_CELLS; horizInterfaceIndex < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; horizInterfaceIndex++) {
+            topValue = cells[i][horizInterfaceIndex - 1].uNorth;
+            bottomValue = cells[i][horizInterfaceIndex].uSouth;
+
+            // Lax-Freidrichs Scheme
+            flux = 0.5 * Config::ADVECTION_VELOCITY_Y * (topValue + bottomValue) 
+                    - 0.5 * abs(Config::ADVECTION_VELOCITY_Y) * (bottomValue - topValue);
+
+            flux *= dx;
+
+            cells[i][horizInterfaceIndex - 1].total_flux -= flux;
+            cells[i][horizInterfaceIndex].total_flux += flux;
+        }
     }
 }

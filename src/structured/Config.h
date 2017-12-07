@@ -14,7 +14,7 @@ class Config {
         static const int NUM_Y_CELLS = 60;
         static const int NUM_GHOST_CELLS = 4;
         static const int NUM_RK_STEPS = 3;
-        static const double STOPPING_TIME = 0.5;
+        static const double STOPPING_TIME = 2.0;
         static const int MAX_TIME_ITER = 100000;
         static const double MIN_X = -1.0;
         static const double MIN_Y = -1.0;

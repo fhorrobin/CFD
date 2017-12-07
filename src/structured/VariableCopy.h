@@ -4,7 +4,7 @@
 
 class VariableCopy {
     public:
-        static void copyZeroRK(Cell *cells);      
+        static void copyZeroRK(Cell cells[][Config::NY]);      
 };
 
 #endif

@@ -4,7 +4,7 @@
 
 class TimeIntegration {
     public:
-        static void updateCellAverages(Cell *cells, int rk_step, double dt);
+        static void updateCellAverages(Cell cells[][Config::NY], int rk_step, double dt);
 };
 
 #endif

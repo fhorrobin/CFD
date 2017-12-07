@@ -4,7 +4,7 @@
 
 class VariableReconstructor {
     public:
-        static void reconstructVariables(Cell *cell, int rk_step);
+        static void reconstructVariables(Cell cell[][Config::NY], int rk_step);
 };
 
 #endif

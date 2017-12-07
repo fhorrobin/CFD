@@ -4,7 +4,7 @@
 
 class Flux {
     public:
-        static void calculateFlux (Cell *cells, int rk_step, int N);
+        static void calculateFlux (Cell cells[][Config::NY], int rk_step);
 };
 
 #endif

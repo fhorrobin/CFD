@@ -9,7 +9,7 @@
 class Cell {
     public:
         double u[Config::NUM_RK_STEPS + 1];
-        double uWest, uEast;
+        double uWest, uEast, uNorth, uSouth;
         double cx;
         double cy;
         double dx;

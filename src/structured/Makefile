@@ -1,6 +1,6 @@
 CC = icpc
 OUTPUT = cfd.x
-OBJECTS = main.o Initialize.o WriteFile.o # CalculateTimeStep.o GhostCellUpdater.o VariableReconstructor.o Flux.o TimeIntegration.o VariableCopy.o
+OBJECTS = main.o Initialize.o WriteFile.o CalculateTimeStep.o GhostCellUpdater.o VariableReconstructor.o Flux.o TimeIntegration.o VariableCopy.o
 
 default: cfd
 
