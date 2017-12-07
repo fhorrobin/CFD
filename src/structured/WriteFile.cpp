@@ -17,6 +17,7 @@ void WriteFile::write_file (Cell cells[][Config::NY], int NX, int NY, double tim
     file.open(path + "output_" + counter_string +  ".dat");
 
     file << "NumXCells: " << Config::NUM_X_CELLS << std::endl;
+    file << "NumYCells: " << Config::NUM_Y_CELLS << std::endl;
     file << "NumGhostCells: " << Config::NUM_GHOST_CELLS << std::endl;
     file << "Time: " << time << std::endl;
     file << "CFL: " << Config::COURANT_NUMBER << std::endl;

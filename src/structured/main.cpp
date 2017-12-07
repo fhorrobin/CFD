@@ -33,7 +33,7 @@ int main() {
             cells[i][j].dx = dx;
             cells[i][j].dy = dy;
             cells[i][j].cx = Config::MIN_X  + dx * (i + 0.5 - Config::NUM_GHOST_CELLS);
-            cells[i][j].cx = Config::MIN_Y  + dy * (j + 0.5 - Config::NUM_GHOST_CELLS);
+            cells[i][j].cy = Config::MIN_Y  + dy * (j + 0.5 - Config::NUM_GHOST_CELLS);
         }
     }
 
