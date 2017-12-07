@@ -8,7 +8,7 @@
 
 class Initialize {
     public:
-        static void initialize_solution(Cell *cell, int N);
+        static void initialize_solution(Cell cells[][Config::NY], int NX, int NY);
 
 };
 

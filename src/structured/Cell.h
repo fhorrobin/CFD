@@ -11,7 +11,9 @@ class Cell {
         double u[Config::NUM_RK_STEPS + 1];
         double uWest, uEast;
         double cx;
+        double cy;
         double dx;
+        double dy;
         double total_flux;
 };
 

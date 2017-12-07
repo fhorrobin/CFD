@@ -5,7 +5,7 @@
 #include "Config.h"
 #include "Cell.h"
 
-void WriteFile::write_file (Cell *cells, int N, double time, int counter) {
+void WriteFile::write_file (Cell cells[][Config::NY], int NX, int NY, double time, int counter) {
     std::string path = "./output/";
     const int rk_step = 0;
 
@@ -22,8 +22,10 @@ void WriteFile::write_file (Cell *cells, int N, double time, int counter) {
     file << "CFL: " << Config::COURANT_NUMBER << std::endl;
 
     // Write the cells
-    for (int i = 0; i < N; i++) {
-        file << cells[i].cx << " " << cells[i].u[rk_step] << std::endl;
+    for (int i = 0; i < NX; i++) {
+        for (int j = 0; j < NY; j++) {
+            file << cells[i][j].cx << " " << cells[i][j].cy << " " << cells[i][j].u[rk_step] << std::endl;
+        }
     }
 
 }

@@ -4,7 +4,7 @@
 
 class WriteFile {
     public:
-        static void write_file (Cell *cells, int N, double time, int counter);
+        static void write_file (Cell cells[][Config::NY], int NX, int NY, double time, int counter);
 };
 
 #endif
