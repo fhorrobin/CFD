@@ -13,6 +13,8 @@ for filename in filenames:
     
     file = open(filename, 'r')
 
+    print("Plotting: " + filename)
+
     xCells = int(file.readline().split()[1])
     yCells = int(file.readline().split()[1])
     ghostCells = int(file.readline().split()[1])
@@ -32,9 +34,12 @@ for filename in filenames:
     fig.colorbar(cs, ax=ax)
     ax.set_title("CFL = %1.3f Time = %5.3f" % (cfl, time))
     fig.savefig(filename.replace(".dat", ".png"))
+    plt.close()
     
 images = []
 output_name = ("sim_cfl%1.3f.gif" % cfl)
+
+print("Creating simulation: " + output_name)
 for filename in filenames:
     images.append(imageio.imread(filename.replace('.dat', '.png')))
 imageio.mimsave(output_name, images)
