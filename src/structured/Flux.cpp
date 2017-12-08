@@ -10,8 +10,13 @@ void Flux::calculateFlux(Cell cells[][Config::NY], int rk_step) {
     double bottomValue = 0;
     double flux = 0;
 
+    int j;
+    int vertInterfaceIndex;
+    int horizInterfaceIndex;
+
+    //#pragma omp parallel for private(j) schedule(static)
     for (int i = 0; i < Config::NX; i++) {
-        for (int j = 0; j < Config::NY; j++) {
+        for (j = 0; j < Config::NY; j++) {
             cells[i][j].total_flux = 0.0;
         }
     }
@@ -21,8 +26,9 @@ void Flux::calculateFlux(Cell cells[][Config::NY], int rk_step) {
     double dy = cells[0][0].dy;
 
     // Flux through the vertical edges
+    #pragma omp parallel for private(vertInterfaceIndex,leftValue,rightValue,flux) schedule(static)
     for (int j = Config::NUM_GHOST_CELLS; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS; j++) {
-        for (int vertInterfaceIndex = Config::NUM_GHOST_CELLS; vertInterfaceIndex < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS + 1; vertInterfaceIndex++) {
+        for (vertInterfaceIndex = Config::NUM_GHOST_CELLS; vertInterfaceIndex < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS + 1; vertInterfaceIndex++) {
             leftValue = cells[vertInterfaceIndex - 1][j].uEast;
             rightValue = cells[vertInterfaceIndex][j].uWest;
 
@@ -38,8 +44,9 @@ void Flux::calculateFlux(Cell cells[][Config::NY], int rk_step) {
     }
 
     // Flux through the horizontal edges
+    #pragma omp parallel for private(horizInterfaceIndex,topValue,bottomValue,flux) schedule(static)
     for (int i = Config::NUM_GHOST_CELLS; i < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS; i++) {
-        for (int horizInterfaceIndex = Config::NUM_GHOST_CELLS; horizInterfaceIndex < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; horizInterfaceIndex++) {
+        for (horizInterfaceIndex = Config::NUM_GHOST_CELLS; horizInterfaceIndex < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; horizInterfaceIndex++) {
             topValue = cells[i][horizInterfaceIndex - 1].uNorth;
             bottomValue = cells[i][horizInterfaceIndex].uSouth;
 

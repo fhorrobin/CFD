@@ -3,6 +3,8 @@
  */
 #include <iostream>
 #include <math.h>
+#include <ctime>
+#include <omp.h>
 #include "Config.h"
 #include "Cell.h"
 #include "Initialize.h"
@@ -43,6 +45,8 @@ int main() {
     WriteFile::write_file(cells, Config::NX, Config::NY, 0.0, counter);
     counter += 1;
 
+    double start_time = omp_get_wtime();
+
     for (int it = 0; it < Config::MAX_TIME_ITER; it++) {
         dt = CalculateTimeStep::get_dt(cells);
 
@@ -72,6 +76,10 @@ int main() {
             counter += 1;
         }
     }
+
+    double diff = omp_get_wtime() - start_time;
+
+    std::cout << diff << std::endl;
 
     WriteFile::write_file(cells, Config::NX, Config::NY, time, counter);
     counter += 1;

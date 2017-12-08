@@ -4,8 +4,9 @@ from glob import glob
 import imageio
 plt.ioff()
 
-filenames = glob("./output_*.dat")
+filenames = glob("../src/structured/output/output_*.dat")
 filenames.sort()
+
 
 for filename in filenames:
     fig = plt.figure(figsize=(6,6))
@@ -37,7 +38,7 @@ for filename in filenames:
     plt.close()
     
 images = []
-output_name = ("sim_cfl%1.3f.gif" % cfl)
+output_name = ("sim.gif")
 
 print("Creating simulation: " + output_name)
 for filename in filenames:

@@ -10,8 +10,8 @@ enum ReconstructorTypes {FIRST_ORDER, LAX_WENDROFF, BEAM_WARMING, FROMM, LIMITED
 
 class Config {
     public:
-        static const int NUM_X_CELLS = 80;
-        static const int NUM_Y_CELLS = 60;
+        static const int NUM_X_CELLS = 150;
+        static const int NUM_Y_CELLS = 200;
         static const int NUM_GHOST_CELLS = 4;
         static const int NUM_RK_STEPS = 3;
         static const double STOPPING_TIME = 2.0;
@@ -22,7 +22,7 @@ class Config {
         static const double MAX_Y = 1.0;
         static const double ADVECTION_VELOCITY_X = 1.0;
         static const double ADVECTION_VELOCITY_Y = 1.0;
-        static const double COURANT_NUMBER = 0.3;
+        static const double COURANT_NUMBER = 0.5;
         static const ReconstructorTypes RECONST_TYPE = LIMITED_LW;
 
         static const int NX = Config::NUM_X_CELLS + 2 * Config::NUM_GHOST_CELLS;

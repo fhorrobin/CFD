@@ -5,19 +5,22 @@
 void TimeIntegration::updateCellAverages(Cell cells[][Config::NY], int rk_step, double dt) {
     // Assume dx, dy are constant
     double area = cells[0][0].dx * cells[0][0].dy;
+    int j;
     
     switch (Config::NUM_RK_STEPS) {
         case 1: // 1 Step RK Method
+            #pragma omp parallel for private(j,rk_step) schedule(static)
             for (int i = Config::NUM_GHOST_CELLS; i < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS; i++) {
-                for (int j = Config::NUM_GHOST_CELLS; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS; j++) {
+                for (j = Config::NUM_GHOST_CELLS; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS; j++) {
                     cells[i][j].u[rk_step + 1] = cells[i][j].u[rk_step] + dt / area * cells[i][j].total_flux;
                 }
             }
             break;
 
         case 2: // 2 Step RK Method
+            #pragma omp parallel for private(j,rk_step) schedule(static)
             for (int i = Config::NUM_GHOST_CELLS; i < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS; i++) {
-                for (int j = Config::NUM_GHOST_CELLS; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS; j++) {
+                for (j = Config::NUM_GHOST_CELLS; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS; j++) {
                     switch (rk_step) {
                         case 0: // Step 0
                             cells[i][j].u[rk_step + 1] = cells[i][j].u[rk_step]
@@ -36,8 +39,9 @@ void TimeIntegration::updateCellAverages(Cell cells[][Config::NY], int rk_step, 
         break;
 
         case 3: // 3 Step RK Method
+            #pragma omp parallel for private(j,rk_step) schedule(static)
             for (int i = Config::NUM_GHOST_CELLS; i < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS; i++) {
-                for (int j = Config::NUM_GHOST_CELLS; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS; j++) {
+                for (j = Config::NUM_GHOST_CELLS; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS; j++) {
                     switch (rk_step) {
                         case 0: // Step 0
                             cells[i][j].u[rk_step + 1] = cells[i][j].u[rk_step]

@@ -8,11 +8,13 @@ void VariableReconstructor::reconstructVariables(Cell cells[][Config::NY], int r
     double du_dx, du_dy = 0;
     double r_x, r_y = 0;
     double phi_x, phi_y = 0;
+    int j;
     
     switch (Config::RECONST_TYPE) {
         case FIRST_ORDER:
+            #pragma omp parallel for private(j)
             for (int i = Config::NUM_GHOST_CELLS - 1; i < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS + 1; i++) {
-                for (int j = Config::NUM_GHOST_CELLS - 1; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; j++) {
+                for (j = Config::NUM_GHOST_CELLS - 1; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; j++) {
                     cells[i][j].uWest = cells[i][j].u[rk_step];
                     cells[i][j].uEast = cells[i][j].u[rk_step];
                     cells[i][j].uNorth = cells[i][j].u[rk_step];
@@ -22,8 +24,9 @@ void VariableReconstructor::reconstructVariables(Cell cells[][Config::NY], int r
         break;
 
         case BEAM_WARMING:
+            #pragma omp parallel for private(j,du_dx,du_dy)
             for (int i = Config::NUM_GHOST_CELLS - 1; i < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS + 1; i++) {
-                for (int j = Config::NUM_GHOST_CELLS - 1; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; j++) {
+                for (j = Config::NUM_GHOST_CELLS - 1; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; j++) {
                     du_dx = (cells[i][j].u[rk_step] - cells[i-1][j].u[rk_step]) / cells[i][j].dx;
                     du_dy = (cells[i][j].u[rk_step] - cells[i][j-1].u[rk_step]) / cells[i][j].dy;
 
@@ -37,8 +40,9 @@ void VariableReconstructor::reconstructVariables(Cell cells[][Config::NY], int r
         break;
 
         case LAX_WENDROFF:
+            #pragma omp parallel for private(j,du_dx,du_dy)
             for (int i = Config::NUM_GHOST_CELLS - 1; i < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS + 1; i++) {
-                for (int j = Config::NUM_GHOST_CELLS - 1; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; j++) {
+                for (j = Config::NUM_GHOST_CELLS - 1; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; j++) {
                     du_dx = (cells[i + 1][j].u[rk_step] - cells[i][j].u[rk_step]) / cells[i][j].dx;
                     du_dy = (cells[i][j + 1].u[rk_step] - cells[i][j].u[rk_step]) / cells[i][j].dy;
 
@@ -52,8 +56,9 @@ void VariableReconstructor::reconstructVariables(Cell cells[][Config::NY], int r
         break;
 
         case FROMM:
+            #pragma omp parallel for private(j,du_dx,du_dy)
             for (int i = Config::NUM_GHOST_CELLS - 1; i < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS + 1; i++) {
-                for (int j = Config::NUM_GHOST_CELLS - 1; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; j++) {
+                for (j = Config::NUM_GHOST_CELLS - 1; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; j++) {
                     du_dx = (cells[i + 1][j].u[rk_step] - cells[i - 1][j].u[rk_step]) / (2.0 * cells[i][j].dx);
                     du_dy = (cells[i][j + 1].u[rk_step] - cells[i][j - 1].u[rk_step]) / (2.0 * cells[i][j].dy);
 
@@ -67,8 +72,9 @@ void VariableReconstructor::reconstructVariables(Cell cells[][Config::NY], int r
         break;
 
         case LIMITED_LW:
+            #pragma omp parallel for private(j,r_x,phi_x,r_y,phi_y,du_dx,du_dy) schedule(static)
             for (int i = Config::NUM_GHOST_CELLS - 1; i < Config::NUM_X_CELLS + Config::NUM_GHOST_CELLS + 1; i++) {
-                for (int j = Config::NUM_GHOST_CELLS - 1; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; j++) {
+                for (j = Config::NUM_GHOST_CELLS - 1; j < Config::NUM_Y_CELLS + Config::NUM_GHOST_CELLS + 1; j++) {
                     // X Limiter Parameter
                     r_x = (cells[i][j].u[rk_step] - cells[i-1][j].u[rk_step]) / (cells[i+1][j].u[rk_step] - cells[i][j].u[rk_step] + eps);
                     r_x = std::max(0.0, r_x);
